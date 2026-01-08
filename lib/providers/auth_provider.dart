@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../services/auth_service.dart';
+import 'package:selekt_tim/services/auth_service.dart';
 
 /*Upravlja autentifikacijom korisnika i obaveštava UI o promenama stanja
 UI prica sa AuthProvider-om, on onda koristi AuthService za obavljanje stvarnih operacija autentifikacije
