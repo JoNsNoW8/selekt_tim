@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
-//import '../screens/auth/login_screen.dart';
 import '../widgets/navbar.dart';
 
 void main() {
@@ -24,12 +23,6 @@ class MainApp extends StatelessWidget {
       home: Consumer<AuthProvider>(
         builder: (context, auth, _) {
           return const Navbar();
-          /*
-          if (auth.isLoggedIn) {
-            return const LoginScreen();
-          } else {
-            return const Navbar();
-          }*/
         },
       ),
     );

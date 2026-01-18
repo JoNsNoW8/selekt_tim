@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:selekt_tim/screens/worker/search_by_surname.dart';
 import '../providers/auth_provider.dart';
 import '../screens/guest/guest_home_screen.dart';
 import '../screens/worker/profile.dart'; // Sadrzi login formu
@@ -36,7 +37,8 @@ class _NavbarState extends State<Navbar> {
 
     // 2. Ekran za radnike
     final List<Widget> workerScreens = [
-      const SearchScreen(),
+      const SearchBySurnameScreen(),
+      const SearchScreen(),    // Default tab
       const BarCodeScreen(),
       const ProfileScreen(), // Desni tab - profil radnika
     ];
@@ -64,7 +66,8 @@ class _NavbarState extends State<Navbar> {
         },
         destinations: auth.isLoggedIn 
           ? const [
-              NavigationDestination(icon: Icon(Icons.search), label: 'Pretraga'),
+              NavigationDestination(icon: Icon(Icons.search), label: 'Pretraga vlasnika'),
+              NavigationDestination(icon: Icon(Icons.search_rounded), label: 'Pretraga'),
               NavigationDestination(icon: Icon(Icons.qr_code_scanner), label: 'Skeniraj'),
               NavigationDestination(icon: Icon(Icons.person), label: 'Profil'),
             ]

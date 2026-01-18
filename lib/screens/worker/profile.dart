@@ -16,34 +16,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // AuthProvider odlucuje koji UI da prikaze
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Prijavite se kao radnik'),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Korisnicko ime'),
+      appBar: AppBar(
+        title: Text(authProvider.isLoggedIn ? 'Vaš Profil' : 'Prijava'),
+        centerTitle: true,
+      ),
+      body: authProvider.isLoggedIn 
+          ? _buildWorkerProfile(authProvider) // ako je prijavljen, prikazi profil
+          : _buildLoginForm(authProvider),    // ako nije, pokazi login formu
+    );
+  }
+
+  // --- UI ako je  PRIJAVLJEN ---
+  Widget _buildWorkerProfile(AuthProvider auth) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.person, size: 50, color: Colors.white),
+          ),
+          const SizedBox(height: 20),
+          // Hardcoded for now as requested
+          const Text("Ime: Marko", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text("Prezime: Marković", style: TextStyle(fontSize: 18)),
+          const Text("Uloga: Terenski Radnik", style: TextStyle(fontSize: 16, color: Colors.grey)),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () => auth.logout(),
+            icon: const Icon(Icons.logout),
+            label: const Text("Odjavi se"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red[50],
+              foregroundColor: Colors.red,
             ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Lozinka'),
-              obscureText: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- UI za GOSTE (Login forma) ---
+  Widget _buildLoginForm(AuthProvider authProvider) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Prijavite se kao radnik', style: TextStyle(fontSize: 18)),
+          const SizedBox(height: 20),
+          TextField(
+            controller: _usernameController,
+            decoration: const InputDecoration(
+              labelText: 'Korisničko ime',
+              border: OutlineInputBorder(),
             ),
-            const SizedBox(height: 20),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
+          ),
+          const SizedBox(height: 15),
+          TextField(
+            controller: _passwordController,
+            decoration: const InputDecoration(
+              labelText: 'Lozinka',
+              border: OutlineInputBorder(),
+            ),
+            obscureText: true,
+          ),
+          const SizedBox(height: 25),
+          _isLoading
+              ? const CircularProgressIndicator()
+              : SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
                     onPressed: () async {
                       if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unesite korisnicko ime i lozinku')),
+                          const SnackBar(content: Text('Unesite podatke')),
                         );
                         return;
                       }
@@ -53,13 +106,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _usernameController.text,
                           _passwordController.text,
                         );
-                        // Success: AuthProvider notifies, user stays in navbar
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Prijava uspešna')),
-                        );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Greška pri prijavi: $e')),
+                          SnackBar(content: Text('Greška: $e')),
                         );
                       } finally {
                         setState(() => _isLoading = false);
@@ -67,8 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: const Text('Prijavi se'),
                   ),
-          ],
-        ),
+                ),
+        ],
       ),
     );
   }

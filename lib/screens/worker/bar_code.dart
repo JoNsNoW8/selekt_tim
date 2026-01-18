@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
-class BarCodeScreen extends StatefulWidget{
+class BarCodeScreen extends StatelessWidget {
   const BarCodeScreen({super.key});
 
   @override
-  State<BarCodeScreen> createState() => _BarCodeScreenState();
-}
-class _BarCodeScreenState extends State<BarCodeScreen>{
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-          child: const Text('Bar kod skener'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.qr_code_scanner, size: 100, color: Colors.blue),
+            SizedBox(height: 20),
+            Text("Skeniranje Bar-koda", 
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Text("Kamera će biti aktivirana ovde"),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
