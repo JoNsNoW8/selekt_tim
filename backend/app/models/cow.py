@@ -2,7 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from app.database.base import Base
 
 class Grlo(Base):
-    __tablename__ = "Grlo"
+    __tablename__ = "GRLA"
 
     ID_Grla = Column(Integer, primary_key=True)
     ID_Majke = Column(Integer)

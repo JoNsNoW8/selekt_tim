@@ -25,8 +25,7 @@ class _SearchBySurnameScreenState extends State<SearchBySurnameScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement search logic (e.g., call API for cows by surname)
-                // For now, show placeholder result
+                // TODO: Implementirati logiku pretrage po prezimenu
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Pretraga za: ${_surnameController.text}')),
                 );

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import SessionLocal
-from app.models.user import Korisnik
+from app.models.user import Users
 from app.core.security import verify_password, create_access_token
 from pydantic import BaseModel
 
@@ -22,9 +22,9 @@ def get_db():
 
 @router.post("/login")
 def login(request: LoginRequest, db: Session = Depends(get_db)):
-    korisnik = db.query(Korisnik).filter(Korisnik.korisnickoIme == request.username).first()
-    if not korisnik or not verify_password(request.password, korisnik.password_hash):
+    user = db.query(Users).filter(Users.Username == request.username).first()
+    if not user or not verify_password(request.password, user.password_hash):
         raise HTTPException(status_code=400, detail="Pogresno korisnicko ime ili lozinka")
-    
-    token = create_access_token(data={"sub": korisnik.korisnickoIme, "Uloga": korisnik.Uloga})
-    return {"access_token": token, "Uloga": korisnik.Uloga}
+
+    token = create_access_token(data={"sub": user.Username, "role": user.Uloga})
+    return {"access_token": token, "Uloga": user.Uloga}

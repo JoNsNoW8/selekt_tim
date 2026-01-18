@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../screens/worker/bar_code.dart';
-import '../screens/worker/profile.dart';
-import '../screens/worker/search_by_surname.dart';
+import '../screens/guest/guest_home_screen.dart';
+import '../screens/worker/profile.dart'; // Sadrzi login formu
 import '../screens/worker/search_screen.dart';
+import '../screens/worker/bar_code.dart';
 
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
@@ -14,73 +14,65 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  late List<Widget> screens;
-  int currentScreen = 0;
+  int currentScreen = 1; //HOME SCREEN JE DEFAULT
   late PageController controller;
 
   @override
   void initState() {
     super.initState();
-    screens = const [
-      SearchScreen(),  // Search by ID
-      SearchBySurnameScreen(),  // New: Search by surname
-      BarCodeScreen(),
-      ProfileScreen(),  // New: Profile with login
-    ];
     controller = PageController(initialPage: currentScreen);
   }
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context); // On slusa promene u auth stanju
+
+    // 1. Ekran za goste
+    final List<Widget> guestScreens = [
+      const Center(child: Text('Budući API Ekran')), // Levi tba
+      const GuestHomeScreen(),                       // Srednji tab
+      const ProfileScreen(),                         // Desni tab - login forma
+    ];
+
+    // 2. Ekran za radnike
+    final List<Widget> workerScreens = [
+      const SearchScreen(),
+      const BarCodeScreen(),
+      const ProfileScreen(), // Desni tab - profil radnika
+    ];
+
+    // Izbor aktivnih ekrana na osnovu auth stanja
+    final activeScreens = auth.isLoggedIn ? workerScreens : guestScreens;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Radnik panel'),
-        actions: [
-          Consumer<AuthProvider>(
-            builder: (context, auth, _) {
-              if (auth.isLoggedIn) {
-                return IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () async {
-                    try {
-                      await auth.logout();
-                      // AuthProvider notifies, main.dart switches to LoginScreen
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Greška pri odjavi: $e')),
-                      );
-                    }
-                  },
-                );
-              } else {
-                // Removed login button here—handled in Profile screen
-                return const SizedBox.shrink();
-              }
-            },
-          ),
-        ],
+        title: Text(auth.isLoggedIn ? 'Radnik Panel' : 'SelektTim'),
+        centerTitle: true,
       ),
       body: PageView(
         controller: controller,
         physics: const NeverScrollableScrollPhysics(),
-        children: screens,
+        children: activeScreens,
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentScreen,
-        height: kBottomNavigationBarHeight,
         onDestinationSelected: (index) {
           setState(() {
             currentScreen = index;
-            controller.jumpToPage(currentScreen);
+            controller.jumpToPage(index);
           });
         },
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.search), label: 'Search ID'),
-          NavigationDestination(icon: Icon(Icons.person_search), label: 'Search Surname'),  // New
-          NavigationDestination(icon: Icon(Icons.qr_code_scanner), label: 'Scan'),
-          NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),  // New
-        ],
+        destinations: auth.isLoggedIn 
+          ? const [
+              NavigationDestination(icon: Icon(Icons.search), label: 'Pretraga'),
+              NavigationDestination(icon: Icon(Icons.qr_code_scanner), label: 'Skeniraj'),
+              NavigationDestination(icon: Icon(Icons.person), label: 'Profil'),
+            ]
+          : const [
+              NavigationDestination(icon: Icon(Icons.info_outline), label: 'Info'),
+              NavigationDestination(icon: Icon(Icons.home), label: 'Početna'),
+              NavigationDestination(icon: Icon(Icons.login), label: 'Prijava'),
+            ],
       ),
     );
   }
