@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:selekt_tim/screens/auth/register_screen.dart';
 import '../../providers/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -24,9 +25,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text(authProvider.isLoggedIn ? 'Vaš Profil' : 'Prijava'),
         centerTitle: true,
       ),
-      body: authProvider.isLoggedIn 
-          ? _buildWorkerProfile(authProvider) // ako je prijavljen, prikazi profil
-          : _buildLoginForm(authProvider),    // ako nije, pokazi login formu
+      body: authProvider.isLoggedIn
+          ? _buildWorkerProfile(
+              authProvider,
+            ) // ako je prijavljen, prikazi profil
+          : _buildLoginForm(authProvider), // ako nije, pokazi login formu
     );
   }
 
@@ -42,10 +45,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Icon(Icons.person, size: 50, color: Colors.white),
           ),
           const SizedBox(height: 20),
-          // Hardcoded for now as requested
-          const Text("Ime: Marko", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          // hardcode-ovano za sad
+          const Text(
+            "Ime: Marko",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const Text("Prezime: Marković", style: TextStyle(fontSize: 18)),
-          const Text("Uloga: Terenski Radnik", style: TextStyle(fontSize: 16, color: Colors.grey)),
+          const Text(
+            "Uloga: Terenski Radnik",
+            style: TextStyle(fontSize: 16, color: Colors.grey),
+          ),
           const SizedBox(height: 30),
           ElevatedButton.icon(
             onPressed: () => auth.logout(),
@@ -94,7 +103,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () async {
-                      if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+                      if (_usernameController.text.isEmpty ||
+                          _passwordController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Unesite podatke')),
                         );
@@ -107,9 +117,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _passwordController.text,
                         );
                       } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Greška: $e')),
-                        );
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text('Greška: $e')));
                       } finally {
                         setState(() => _isLoading = false);
                       }
@@ -117,6 +127,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: const Text('Prijavi se'),
                   ),
                 ),
+          const SizedBox(height: 15),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const RegisterScreen()),
+              );
+            },
+            child: const Text('Nemate nalog? Registrujte se ovde'),
+          ),
         ],
       ),
     );
