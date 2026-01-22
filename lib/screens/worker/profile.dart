@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         const SizedBox(height: 20),
         Text(
-          "$ime $prezime", // Displays "Marko Marković"
+          "$ime $prezime",
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),

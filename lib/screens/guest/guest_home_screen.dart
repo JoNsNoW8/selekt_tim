@@ -13,7 +13,7 @@ class GuestHomeScreen extends StatelessWidget {
           children: [
             const Text(
               'Dobrodošli u SelektTim',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF4F1516)),
             ),
             const SizedBox(height: 20),
             const Text(
