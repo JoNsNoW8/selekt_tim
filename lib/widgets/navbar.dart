@@ -33,7 +33,7 @@ class _NavbarState extends State<Navbar> {
         const GuestHomeScreen(),                       
         const ProfileScreen(), //Login tab                         
       ];
-    } else if (auth.role == 'admin') {
+    } else if (auth.userRole == 'admin') {
       return [
         const AdminPanel(), //Upravljanje nalozima
         const SearchBySurnameScreen(),
@@ -58,7 +58,7 @@ class _NavbarState extends State<Navbar> {
         NavigationDestination(icon: Icon(Icons.home), label: 'Početna'),
         NavigationDestination(icon: Icon(Icons.login), label: 'Prijava'),
       ];
-    } else if (auth.role == 'admin') {
+    } else if (auth.userRole == 'admin') {
       return const [
         NavigationDestination(icon: Icon(Icons.admin_panel_settings), label: 'Admin'),
         NavigationDestination(icon: Icon(Icons.people), label: 'Vlasnik'),
@@ -90,7 +90,7 @@ class _NavbarState extends State<Navbar> {
     return Scaffold(
       appBar: AppBar(
         title: Text(auth.isLoggedIn 
-            ? (auth.role == 'admin' ? 'Admin Panel' : 'Radnik Panel') 
+            ? (auth.userRole == 'admin' ? 'Admin Panel' : 'Radnik Panel') 
             : 'SelektTim'),
         centerTitle: true,
       ),

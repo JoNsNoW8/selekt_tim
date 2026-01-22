@@ -71,4 +71,4 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
 
     print("DEBUG: Login successful!")
     token = create_access_token(data={"sub": user.Username, "role": user.Uloga})
-    return {"access_token": token, "Uloga": user.Uloga}
+    return {"access_token": token, "Uloga": user.Uloga, "ImeRadnika": user.ImeRadnika, "PrezimeRadnika": user.PrezimeRadnika}

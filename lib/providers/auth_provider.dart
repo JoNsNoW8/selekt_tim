@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:selekt_tim/services/auth_service.dart';
 
 /*Upravlja autentifikacijom korisnika i obaveštava UI o promenama stanja
@@ -9,20 +12,50 @@ AuthProvider koristi ChangeNotifier da obavesti UI o promenama stanja autentifik
 
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
+  final String baseUrl = 'http://192.168.0.17:8000';
   bool _isLoggedIn = false;
-  String? _role;
+  String? _userRole;
+  Map<String, dynamic>? _userData;
 
   bool get isLoggedIn => _isLoggedIn;
-  String? get role => _role;
+  String? get userRole => _userRole;
+  Map<String, dynamic>? get userData => _userData;
 
   Future<void> login(String username, String password) async {
     //poziva AuthService za login kada korisnik pritisne login dugme
     try {
       final data = await _authService.login(username, password);
       _isLoggedIn = true;
-      _role = data?['Uloga'];
+      _userRole = data?['Uloga'];
+      _userData = data;
       notifyListeners();
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> register(String ime, String prezime, String username, String password, String inviteCode) async {
+    try{
+      final response = await http.post(
+        Uri.parse('$baseUrl/auth/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'ime': ime,
+        'prezime': prezime,
+        'username': username,
+        'password': password,
+        'invite_code': inviteCode,
+      }), 
+      );
+
+      if(response.statusCode == 200){
+        return;
+      }
+      else {
+        final errorData = jsonDecode(response.body);
+        throw errorData['detail'] ?? 'Greška pri registraciji';
+      }
+    } catch(e){
       rethrow;
     }
   }
@@ -30,7 +63,8 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     await _authService.logout();
     _isLoggedIn = false;
-    _role = null;
+    _userRole = null;
+    _userData = null;
     notifyListeners();
   }
 
