@@ -8,7 +8,7 @@ DATABASE_URL = ("mssql+pyodbc://@DESKTOP-J08GUNA\\SQLEXPRESS/SelektTim"
     "&TrustServerCertificate=yes") #Konekcioni string za BP
 
 engine = create_engine(DATABASE_URL) #Kreiranje engine-a za konekciju sa BP
-SessionLocal = sessionmaker(bine=engine) #Kreiranje sesije za rad sa BP
+SessionLocal = sessionmaker(bind=engine) #Kreiranje sesije za rad sa BP
 
 
 # Test konekcije

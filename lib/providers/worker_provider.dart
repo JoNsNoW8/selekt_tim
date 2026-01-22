@@ -1,0 +1,1 @@
+//cuva podatke o trenutno ulogovanom radniku

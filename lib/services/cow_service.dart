@@ -1,0 +1,1 @@
+//upravlja zahtevima za pribavljanje podataka o kravi - fetching, cuvanje, azuriranje

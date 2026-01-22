@@ -1,5 +1,5 @@
-from http.client import HTTPException
-from fastapi import Depends
+import bcrypt
+from fastapi import HTTPException, Depends
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
@@ -10,10 +10,15 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")  #Kontekst za 
 oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")  #OAuth2 šema za autentifikaciju putem tokena
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)  #Funkcija za verifikaciju lozinke
+    password_bytes = plain_password.encode('utf-8')
+    hashed_bytes = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(password_bytes, hashed_bytes)
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)  #Funkcija za heširanje lozinke
+    pwd_bytes = password.encode('utf-8')
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(pwd_bytes, salt)
+    return hashed.decode('utf-8')
 
 SECRET_KEY = os.getenv("SECRET_KEY")  #Tajni ključ za JWT token
 if not SECRET_KEY:
@@ -21,7 +26,7 @@ if not SECRET_KEY:
 ALGORITHM = "HS256"  #Algoritam za potpisivanje JWT tokena
 ACCESS_TOKEN_EXPIRE_MINUTES = 15  #Vreme isteka tokena u minutima
 
-def get_current_user(token: str = Depends(oauth_2_scheme)): #Funkcija za dobijanje trenutnog korisnika iz JWT tokena
+def get_current_worker(token: str = Depends(oauth_2_scheme)): #Funkcija za dobijanje trenutnog korisnika iz JWT tokena
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]) 
         username: str = payload.get("sub")

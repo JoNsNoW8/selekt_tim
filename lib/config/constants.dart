@@ -1,0 +1,1 @@
+//obezbedjuje konstantne vrednosti koje se koriste kroz celu aplikaciju

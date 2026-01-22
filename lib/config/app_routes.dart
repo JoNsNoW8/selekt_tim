@@ -1,0 +1,1 @@
+//navigacija svih ekrana aplikacije

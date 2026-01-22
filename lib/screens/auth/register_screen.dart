@@ -12,6 +12,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _prezimeController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _inviteCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +26,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: _imeController,
-              decoration: const InputDecoration(labelText: 'Ime', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Ime',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 15),
             TextField(
               controller: _prezimeController,
-              decoration: const InputDecoration(labelText: 'Prezime', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Prezime',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 15),
             TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Korisničko ime', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Korisničko ime',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 15),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Lozinka', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                labelText: 'Lozinka',
+                border: OutlineInputBorder(),
+              ),
               obscureText: true,
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              controller: _inviteCodeController,
+              decoration: const InputDecoration(
+                labelText: 'Pozivni kod',
+                hintText: 'Unesite kod koji ste dobili od CEO-a',
+                prefixIcon: Icon(Icons.lock_outline),
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 30),
             SizedBox(
@@ -52,7 +75,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   // API logika za registraciju ide ovde
                   print("Register clicked for: ${_usernameController.text}");
                 },
-                child: const Text('Registruj se', style: TextStyle(fontSize: 18)),
+                child: const Text(
+                  'Registruj se',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ),
           ],

@@ -1,0 +1,1 @@
+//predstavljanje JSON podataka iz API-ja kao objekata klase
