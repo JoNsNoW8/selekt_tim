@@ -11,8 +11,6 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // The background color is inherited from your ThemeData, 
-      // but we ensure it's clean here.
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -66,7 +64,7 @@ class _AdminPanelState extends State<AdminPanel> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF922627), // Your requested accent red
+          backgroundColor: const Color(0xFF922627),
           foregroundColor: Colors.white,
           elevation: 4,
           shape: RoundedRectangleBorder(

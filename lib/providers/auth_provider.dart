@@ -34,28 +34,33 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<void> register(String ime, String prezime, String username, String password, String inviteCode) async {
-    try{
+  Future<void> register(
+    String ime,
+    String prezime,
+    String username,
+    String password,
+    String inviteCode,
+  ) async {
+    try {
       final response = await http.post(
         Uri.parse('$baseUrl/auth/register'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'ime': ime,
-        'prezime': prezime,
-        'username': username,
-        'password': password,
-        'invite_code': inviteCode,
-      }), 
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'ime': ime,
+          'prezime': prezime,
+          'username': username,
+          'password': password,
+          'invite_code': inviteCode,
+        }),
       );
 
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         return;
-      }
-      else {
+      } else {
         final errorData = jsonDecode(response.body);
         throw errorData['detail'] ?? 'Greška pri registraciji';
       }
-    } catch(e){
+    } catch (e) {
       rethrow;
     }
   }

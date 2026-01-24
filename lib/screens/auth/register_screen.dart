@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                           );
-                          Navigator.pop(context); // Go back to Login
+                          Navigator.pop(context);
                         } catch (e) {
                           ScaffoldMessenger.of(
                             context,

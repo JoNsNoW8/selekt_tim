@@ -10,17 +10,23 @@ class SearchBySurnameScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Text("Pretraga po Vlasniku", 
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text(
+              "Pretraga po Vlasniku",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 20),
             TextField(
               decoration: InputDecoration(
                 hintText: "Unesite prezime vlasnika...",
                 prefixIcon: const Icon(Icons.person_search),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            const Expanded(child: Center(child: Text("Lista vlasnika će biti ovde"))),
+            const Expanded(
+              child: Center(child: Text("Lista vlasnika će biti ovde")),
+            ),
           ],
         ),
       ),

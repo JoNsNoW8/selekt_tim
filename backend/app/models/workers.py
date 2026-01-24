@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from app.database.base import Base
 
-class Users(Base):
+
+class Workers(Base):
     __tablename__ = "Radnici"
 
     RadnikID = Column(Integer, primary_key=True)

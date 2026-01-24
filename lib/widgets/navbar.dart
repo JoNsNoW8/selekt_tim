@@ -4,7 +4,7 @@ import 'package:selekt_tim/screens/admin/admin_dashboard.dart';
 import 'package:selekt_tim/screens/worker/search_by_surname.dart';
 import '../providers/auth_provider.dart';
 import '../screens/guest/guest_home_screen.dart';
-import '../screens/worker/profile.dart'; 
+import '../screens/worker/profile.dart';
 import '../screens/worker/search_screen.dart';
 import '../screens/worker/bar_code.dart';
 
@@ -16,7 +16,7 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  int currentScreen = 1; 
+  int currentScreen = 1;
   late PageController controller;
 
   @override
@@ -25,13 +25,12 @@ class _NavbarState extends State<Navbar> {
     controller = PageController(initialPage: currentScreen);
   }
 
-  // Helper to determine role and screens
   List<Widget> _getScreens(AuthProvider auth) {
     if (!auth.isLoggedIn) {
       return [
-        const Center(child: Text('Budući API Ekran')), 
-        const GuestHomeScreen(),                       
-        const ProfileScreen(), //Login tab                         
+        const Center(child: Text('Budući API Ekran')),
+        const GuestHomeScreen(),
+        const ProfileScreen(), //Login tab
       ];
     } else if (auth.userRole == 'admin') {
       return [
@@ -60,17 +59,26 @@ class _NavbarState extends State<Navbar> {
       ];
     } else if (auth.userRole == 'admin') {
       return const [
-        NavigationDestination(icon: Icon(Icons.admin_panel_settings), label: 'Admin'),
+        NavigationDestination(
+          icon: Icon(Icons.admin_panel_settings),
+          label: 'Admin',
+        ),
         NavigationDestination(icon: Icon(Icons.people), label: 'Vlasnik'),
         NavigationDestination(icon: Icon(Icons.search), label: 'Pretraga ID'),
-        NavigationDestination(icon: Icon(Icons.qr_code_scanner), label: 'Skeniraj'),
+        NavigationDestination(
+          icon: Icon(Icons.qr_code_scanner),
+          label: 'Skeniraj',
+        ),
         NavigationDestination(icon: Icon(Icons.person), label: 'Profil'),
       ];
     } else {
       return const [
         NavigationDestination(icon: Icon(Icons.people), label: 'Vlasnik'),
         NavigationDestination(icon: Icon(Icons.search), label: 'Pretraga ID'),
-        NavigationDestination(icon: Icon(Icons.qr_code_scanner), label: 'Skeniraj'),
+        NavigationDestination(
+          icon: Icon(Icons.qr_code_scanner),
+          label: 'Skeniraj',
+        ),
         NavigationDestination(icon: Icon(Icons.person), label: 'Profil'),
       ];
     }
@@ -82,16 +90,17 @@ class _NavbarState extends State<Navbar> {
     final activeScreens = _getScreens(auth);
     final destinations = _getDestinations(auth);
 
-    // Safety check: reset index if the user logs in/out and index is out of bounds
     if (currentScreen >= activeScreens.length) {
       currentScreen = 0;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(auth.isLoggedIn 
-            ? (auth.userRole == 'admin' ? 'Admin Panel' : 'Radnik Panel') 
-            : 'SelektTim'),
+        title: Text(
+          auth.isLoggedIn
+              ? (auth.userRole == 'admin' ? 'Admin Panel' : 'Radnik Panel')
+              : 'SelektTim',
+        ),
         centerTitle: true,
       ),
       body: PageView(

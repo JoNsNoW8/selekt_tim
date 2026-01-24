@@ -34,52 +34,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // --- UI ako je  PRIJAVLJEN ---
- Widget _buildWorkerProfile(AuthProvider auth) {
-  final String ime = auth.userData?['ImeRadnika'] ?? "Korisnik";
-  final String prezime = auth.userData?['PrezimeRadnika'] ?? "";
-  final String uloga = auth.userRole == 'admin' ? "Administrator" : "Terenski Radnik";
+  Widget _buildWorkerProfile(AuthProvider auth) {
+    final String ime = auth.userData?['ImeRadnika'] ?? "Korisnik";
+    final String prezime = auth.userData?['PrezimeRadnika'] ?? "";
+    final String uloga = auth.userRole == 'admin'
+        ? "Administrator"
+        : "Terenski Radnik";
 
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: auth.userRole == 'admin' ? Colors.orange : Colors.blue,
-          child: const Icon(Icons.person, size: 50, color: Colors.white),
-        ),
-        const SizedBox(height: 20),
-        Text(
-          "$ime $prezime",
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(20),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundColor: auth.userRole == 'admin'
+                ? Colors.orange
+                : Colors.blue,
+            child: const Icon(Icons.person, size: 50, color: Colors.white),
           ),
-          child: Text(
-            uloga,
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
+          const SizedBox(height: 20),
+          Text(
+            "$ime $prezime",
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
-        ),
-        const SizedBox(height: 40),
-        ElevatedButton.icon(
-          onPressed: () => auth.logout(),
-          icon: const Icon(Icons.logout),
-          label: const Text("Odjavi se"),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red[50],
-            foregroundColor: Colors.red,
-            minimumSize: const Size(200, 50),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              uloga,
+              style: const TextStyle(fontSize: 14, color: Colors.black54),
+            ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+          const SizedBox(height: 40),
+          ElevatedButton.icon(
+            onPressed: () => auth.logout(),
+            icon: const Icon(Icons.logout),
+            label: const Text("Odjavi se"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red[50],
+              foregroundColor: Colors.red,
+              minimumSize: const Size(200, 50),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   // --- UI za GOSTE (Login forma) ---
   Widget _buildLoginForm(AuthProvider authProvider) {

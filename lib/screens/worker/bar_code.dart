@@ -12,8 +12,10 @@ class BarCodeScreen extends StatelessWidget {
           children: [
             Icon(Icons.qr_code_scanner, size: 100, color: Colors.blue),
             SizedBox(height: 20),
-            Text("Skeniranje Bar-koda", 
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Text(
+              "Skeniranje Bar-koda",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
             Text("Kamera će biti aktivirana ovde"),
           ],
         ),

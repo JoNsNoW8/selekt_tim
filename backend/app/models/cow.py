@@ -1,6 +1,7 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from app.database.base import Base
 
+
 class Grlo(Base):
     __tablename__ = "GRLA"
 

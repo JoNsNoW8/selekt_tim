@@ -32,8 +32,8 @@ class MainApp extends StatelessWidget {
           seedColor: const Color(0xFF922627),
           primary: const Color(0xFF922627),
         ),
-        scaffoldBackgroundColor: const Color(0xFFFBEFEF), // Background color
-        textTheme: GoogleFonts.quicksandTextTheme(), // Quicksand Font
+        scaffoldBackgroundColor: const Color(0xFFFBEFEF),
+        textTheme: GoogleFonts.quicksandTextTheme(),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF4F1516),
           foregroundColor: Colors.white,
@@ -48,7 +48,7 @@ class MainApp extends StatelessWidget {
         ),
         navigationBarTheme: NavigationBarThemeData(
           backgroundColor: const Color(0xFF4F1516),
-          indicatorColor: const Color(0xFF8B3A3B), // Subtle highlight color
+          indicatorColor: const Color(0xFF8B3A3B),
           iconTheme: WidgetStateProperty.resolveWith((states) {
             return const IconThemeData(color: Colors.white);
           }),

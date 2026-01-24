@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Date
 from app.database.base import Base
 
+
 class Vlasnik(Base):
     __tablename__ = "K_VLASNICI"
 
