@@ -3,4 +3,4 @@ from app.database.base import Base
 
 
 class Mesta(Base):
-    __tablename__ = "K_MESTA"
+    __tablename__ = "MESTA"

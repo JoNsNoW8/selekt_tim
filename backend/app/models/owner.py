@@ -3,9 +3,10 @@ from app.database.base import Base
 
 
 class Vlasnik(Base):
-    __tablename__ = "K_VLASNICI"
-
-    ID_Vlasnika = Column(Integer, primary_key=True)
-    ImeVlasnika = Column(String(50))
-    PrezimeVlasnika = Column(String(50))
-    BrGazdinstva = Column(Integer)
+    __tablename__ = "VLASNICI"
+    
+    SH_VLASNIKA = Column(String(4), primary_key=True)
+    IME = Column(String(25))
+    SH_MESTA = Column(String(5))
+    ADRESA = Column(String(25))
+    TELEFON1 = Column(String(10))

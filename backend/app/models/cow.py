@@ -4,11 +4,10 @@ from app.database.base import Base
 
 class Grlo(Base):
     __tablename__ = "GRLA"
-
-    ID_Grla = Column(Integer, primary_key=True)
-    ID_Majke = Column(Integer)
-    Kvalitet_mleka = Column(String(50), nullable=False)
-    Datum_osemenjavanja = Column(Date)
-    Datum_teljenja = Column(Date)
-    Datum_rodjenja = Column(Date)
-    ID_Vlasnika = Column(Integer, ForeignKey("Vlasnik.ID_Vlasnika"))
+    
+    IDG = Column(String(13), primary_key=True)
+    SH_VLASNIKA = Column(String(4))
+    TETOVIR_GR = Column(String(13))
+    SH_MESTA = Column*(String(5)) #isto kao i vlasnik vrv
+    DATUM = Column(Integer) #datum rodjenja krave ali je cuvano kao int
+    
