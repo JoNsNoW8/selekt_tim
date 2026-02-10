@@ -14,6 +14,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
+  bool _isObscured = true;
 
   @override
   Widget build(BuildContext context) {
@@ -87,72 +88,85 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // --- UI za GOSTE (Login forma) ---
   Widget _buildLoginForm(AuthProvider authProvider) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Prijavite se kao radnik', style: TextStyle(fontSize: 18)),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _usernameController,
-            decoration: const InputDecoration(
-              labelText: 'Korisničko ime',
-              border: OutlineInputBorder(),
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.lock_outline, size: 80, color: Color(0xFF4F1516)),
+            const SizedBox(height: 20),
+            const Text('Prijavite se kao radnik', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Korisničko ime',
+                prefixIcon: Icon(Icons.person),
+                border: OutlineInputBorder(),
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          TextField(
-            controller: _passwordController,
-            decoration: const InputDecoration(
-              labelText: 'Lozinka',
-              border: OutlineInputBorder(),
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: 25),
-          _isLoading
-              ? const CircularProgressIndicator()
-              : SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_usernameController.text.isEmpty ||
-                          _passwordController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Unesite podatke')),
-                        );
-                        return;
-                      }
-                      setState(() => _isLoading = true);
-                      try {
-                        await authProvider.login(
-                          _usernameController.text,
-                          _passwordController.text,
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(
-                          context,
-                        ).showSnackBar(SnackBar(content: Text('Greška: $e')));
-                      } finally {
-                        setState(() => _isLoading = false);
-                      }
-                    },
-                    child: const Text('Prijavi se'),
-                  ),
+            const SizedBox(height: 15),
+            TextField(
+              controller: _passwordController,
+              obscureText: _isObscured,
+              decoration: InputDecoration(
+                labelText: 'Lozinka',
+                prefixIcon: const Icon(Icons.lock),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(_isObscured ? Icons.visibility_off : Icons.visibility),
+                  onPressed: (){
+                    setState(() {
+                      _isObscured = !_isObscured;
+                    });
+                  },
                 ),
-          const SizedBox(height: 15),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const RegisterScreen()),
-              );
-            },
-            child: const Text('Nemate nalog? Registrujte se ovde'),
-          ),
-        ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_usernameController.text.isEmpty ||
+                            _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Unesite podatke')),
+                          );
+                          return;
+                        }
+                        setState(() => _isLoading = true);
+                        try {
+                          await authProvider.login(
+                            _usernameController.text,
+                            _passwordController.text,
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Greška: $e')));
+                        } finally {
+                          setState(() => _isLoading = false);
+                        }
+                      },
+                      child: const Text('Prijavi se'),
+                    ),
+                  ),
+            const SizedBox(height: 15),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                );
+              },
+              child: const Text('Nemate nalog? Registrujte se ovde'),
+            ),
+          ],
+        ),
       ),
     );
   }

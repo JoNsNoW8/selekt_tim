@@ -82,4 +82,14 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  
+void updateLocalUserData(Map<String, dynamic> newData) {
+  if (_userData != null) {
+    _userData!['ImeRadnika'] = newData['ime'];
+    _userData!['PrezimeRadnika'] = newData['prezime'];
+    
+    notifyListeners();
+  }
+}
 }

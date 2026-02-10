@@ -1,10 +1,13 @@
 import bcrypt
+from dotenv import load_dotenv
 from fastapi import HTTPException, Depends
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 import os
+
+load_dotenv()  # Učitavanje promenljivih okruženja iz .env fajla
 
 pwd_context = CryptContext(
     schemes=["bcrypt"], deprecated="auto"

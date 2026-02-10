@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:selekt_tim/screens/admin/worker_accounts.dart';
 
 class AdminPanel extends StatefulWidget {
   const AdminPanel({super.key});
@@ -22,8 +23,7 @@ class _AdminPanelState extends State<AdminPanel> {
                 icon: Icons.manage_accounts,
                 label: 'Upravljanje nalozima',
                 onPressed: () {
-                  // TODO: Navigacija ka listi radnika
-                  print("Navigacija: Upravljanje nalozima");
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkerAccountsScreen()));
                 },
               ),
               const SizedBox(height: 25),
