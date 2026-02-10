@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import SessionLocal
-from app.models.workers import Users
+from app.models.workers import Workers
 from app.core.security import verify_password, create_access_token, hash_password
 from pydantic import BaseModel
+from typing import List, Optional
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -37,11 +38,11 @@ async def register_worker(data: RegisterRequest, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=403, detail="Pogrešan pozivni kod. Obratite se administratoru."
         )
-    existing_user = db.query(Users).filter(Users.Username == data.username).first()
+    existing_user = db.query(Workers).filter(Workers.Username == data.username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Korisničko ime je zauzeto.")
     # Kreiranje novog ranika
-    new_user = Users(
+    new_user = Workers(
         ImeRadnika=data.ime,
         PrezimeRadnika=data.prezime,
         Username=data.username,
@@ -60,7 +61,7 @@ async def register_worker(data: RegisterRequest, db: Session = Depends(get_db)):
 def login(request: LoginRequest, db: Session = Depends(get_db)):
     print(f"DEBUG: Attempting login for username: {request.username}")
 
-    user = db.query(Users).filter(Users.Username == request.username).first()
+    user = db.query(Workers).filter(Workers.Username == request.username).first()
 
     if not user:
         print("DEBUG: User not found in database")
@@ -81,3 +82,49 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         "ImeRadnika": user.ImeRadnika,
         "PrezimeRadnika": user.PrezimeRadnika,
     }
+
+class UserUpdate(BaseModel):
+    ime: str
+    prezime: str
+    username: str
+    password: Optional[str] = None # Lozinka je opcionalna, ako se ne želi menjati
+    uloga: str
+
+@router.get("/users")
+def get_all_users(db: Session = Depends(get_db)):
+    users = db.query(Workers).all()
+    return [
+        {
+            "id": u.RadnikID,
+            "ime": u.ImeRadnika,
+            "prezime": u.PrezimeRadnika,
+            "username": u.Username,
+            "uloga": u.Uloga
+        } for u in users
+    ]
+
+@router.put("/users/{user_id}")
+def update_user(user_id: int, data: UserUpdate, db: Session = Depends(get_db)):
+    user = db.query(Workers).filter(Workers.RadnikID == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Korisnik nije pronađen")
+    
+    user.ImeRadnika = data.ime
+    user.PrezimeRadnika = data.prezime
+    user.Username = data.username
+    user.Uloga = data.uloga
+    
+    if data.password: 
+        user.PasswordHash = hash_password(data.password)
+        
+    db.commit()
+    return {"message": "Podaci uspešno ažurirani"}
+
+@router.delete("/users/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(Workers).filter(Workers.RadnikID == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Korisnik nije pronađen")
+    db.delete(user)
+    db.commit()
+    return {"message": "Nalog obrisan"}

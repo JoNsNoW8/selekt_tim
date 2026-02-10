@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:selekt_tim/screens/admin/admin_dashboard.dart';
 import 'package:selekt_tim/screens/worker/search_by_surname.dart';
+import 'package:selekt_tim/widgets/weather_screen.dart';
 import '../providers/auth_provider.dart';
 import '../screens/guest/guest_home_screen.dart';
 import '../screens/worker/profile.dart';
@@ -28,7 +29,7 @@ class _NavbarState extends State<Navbar> {
   List<Widget> _getScreens(AuthProvider auth) {
     if (!auth.isLoggedIn) {
       return [
-        const Center(child: Text('Budući API Ekran')),
+        const WeatherScreen(),
         const GuestHomeScreen(),
         const ProfileScreen(), //Login tab
       ];

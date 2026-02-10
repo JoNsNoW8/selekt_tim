@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
 
+from app.routers import auth, cows, owners
+
 load_dotenv()
 
-from app.routers import auth
-from app.routers import owners
-from app.routers import cows
 
 app = FastAPI(title="SelektTim API")
 
